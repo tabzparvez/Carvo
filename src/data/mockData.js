@@ -1,7 +1,31 @@
 export const nearbyMechanics = [
-  { id: 'm1', name: 'RapidFix Garage', rating: 4.8, eta: '12 mins', distance: '1.8 km' },
-  { id: 'm2', name: 'City Auto Rescue', rating: 4.6, eta: '18 mins', distance: '2.4 km' },
-  { id: 'm3', name: 'Prime Mobile Mechanic', rating: 4.9, eta: '22 mins', distance: '3.1 km' }
+  {
+    id: 'm1',
+    name: 'RapidFix Garage',
+    type: 'tow',
+    rating: 4.8,
+    eta: '12 mins',
+    distance: '1.8 km',
+    proximityNote: '1.8 km away'
+  },
+  {
+    id: 'm2',
+    name: 'City Auto Rescue',
+    type: 'car',
+    rating: 4.6,
+    eta: '18 mins',
+    distance: '2.4 km',
+    proximityNote: '2.4 km away'
+  },
+  {
+    id: 'm3',
+    name: 'Prime Mobile Mechanic',
+    type: 'truck',
+    rating: 4.9,
+    eta: '22 mins',
+    distance: '3.1 km',
+    proximityNote: '3.1 km away'
+  }
 ];
 
 export const maintenanceServices = [

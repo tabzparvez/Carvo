@@ -2,7 +2,7 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import EmergencyHomeScreen from '../screens/emergency/EmergencyHomeScreen';
 import MechanicDetailsScreen from '../screens/emergency/MechanicDetailsScreen';
 import TrackingScreen from '../screens/emergency/TrackingScreen';
@@ -66,19 +66,23 @@ export default function RootNavigator({ appContext, onLogout }) {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerRight: () => (
-          <Pressable onPress={onLogout} style={styles.logout}>
+          <Pressable onPress={onLogout} style={styles.logout} accessibilityRole="button" accessibilityLabel="Logout">
             <Text style={styles.logoutText}>Logout</Text>
           </Pressable>
         ),
-        tabBarActiveTintColor: colors.primary,
+        tabBarStyle: styles.tabBar,
+        tabBarItemStyle: styles.tabItem,
+        tabBarLabelStyle: styles.tabLabel,
+        tabBarActiveTintColor: route.name === 'Emergency' ? colors.primary : colors.subtext,
         tabBarInactiveTintColor: colors.subtext,
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ focused, size }) => {
           const icons = {
             Emergency: 'alert-circle',
             Maintenance: 'construct',
             Parts: 'cart'
           };
-          return <Ionicons name={icons[route.name]} size={size} color={color} />;
+          const iconColor = route.name === 'Emergency' && focused ? colors.primary : colors.subtext;
+          return <Ionicons name={icons[route.name]} size={size} color={iconColor} />;
         }
       })}
     >
@@ -106,5 +110,17 @@ const styles = StyleSheet.create({
   logoutText: {
     color: colors.primary,
     fontWeight: '600'
+  },
+  tabBar: {
+    height: 66,
+    paddingBottom: 6,
+    paddingTop: 6
+  },
+  tabItem: {
+    paddingVertical: 4
+  },
+  tabLabel: {
+    fontWeight: '700',
+    fontSize: 12
   }
 });
