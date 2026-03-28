@@ -27,7 +27,11 @@ export default function CartScreen({ route, navigation, appContext }) {
         keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => (
           <View style={styles.row}>
-            <Text style={styles.itemName}>{item.name}</Text>
+            <View>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemMeta}>{item.category} • {item.brand}</Text>
+              <Text style={styles.itemMeta}>For model: {item.vehicleModel}</Text>
+            </View>
             <Text style={styles.itemPrice}>${item.price}</Text>
           </View>
         )}
@@ -67,6 +71,11 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontWeight: '700',
     color: colors.primary
+  },
+  itemMeta: {
+    color: colors.subtext,
+    fontSize: 12,
+    marginTop: 2
   },
   footer: {
     marginTop: 8,

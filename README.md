@@ -7,13 +7,14 @@ A demo mobile app prototype for **roadside assistance**, **home maintenance book
 ### 1) Emergency Module
 - Emergency button to trigger roadside help
 - Mock GPS location detection
-- Nearby mechanics list (dummy data)
+- Nearby mechanics list (dummy data) with vehicle make-support tags
 - Mechanic details (name, rating, ETA, distance)
 - Dummy call button
 - Booking + tracking updates screen
 - Success confirmation screen
 
 ### 2) Maintenance Module
+- Vehicle make/model selector for standardized booking context
 - Services list:
   - Oil Change
   - Brake Service
@@ -24,7 +25,7 @@ A demo mobile app prototype for **roadside assistance**, **home maintenance book
 - Booking confirmation + success screen
 
 ### 3) Spare Parts Marketplace
-- Product list:
+- Product list with category + brand selection and model compatibility checks:
   - Battery
   - Engine Oil
   - Air Filter

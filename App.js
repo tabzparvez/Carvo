@@ -19,6 +19,7 @@ const navTheme = {
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [vehicle, setVehicle] = useState({ make: 'Toyota', model: 'Corolla' });
 
   const addHistoryItem = (item) => {
     setOrderHistory((prev) => [{ id: Date.now().toString(), ...item }, ...prev]);
@@ -27,9 +28,11 @@ export default function App() {
   const appContext = useMemo(
     () => ({
       addHistoryItem,
-      orderHistory
+      orderHistory,
+      vehicle,
+      setVehicle
     }),
-    [orderHistory]
+    [orderHistory, vehicle]
   );
 
   return (

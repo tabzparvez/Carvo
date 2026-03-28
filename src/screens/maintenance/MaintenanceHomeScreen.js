@@ -2,12 +2,14 @@ import React from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import InfoCard from '../../components/InfoCard';
 import { maintenanceServices } from '../../data/mockData';
+import VehicleSelectorCard from '../../components/VehicleSelectorCard';
 import { colors } from '../../styles/theme';
 
-export default function MaintenanceHomeScreen({ navigation }) {
+export default function MaintenanceHomeScreen({ navigation, appContext }) {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Book maintenance at home</Text>
+      <VehicleSelectorCard vehicle={appContext.vehicle} setVehicle={appContext.setVehicle} />
       <FlatList
         data={maintenanceServices}
         keyExtractor={(item) => item.id}

@@ -11,13 +11,13 @@ export default function MaintenanceBookingScreen({ route, navigation, appContext
   const bookService = () => {
     appContext.addHistoryItem({
       title: service.title,
-      subtitle: `Maintenance • ${date.toLocaleString()}`,
+      subtitle: `${appContext.vehicle.make} ${appContext.vehicle.model} • ${date.toLocaleString()}`,
       amount: `$${service.price}`
     });
 
     navigation.navigate('Success', {
       title: 'Service Booked',
-      message: `${service.title} is scheduled for ${date.toLocaleString()}.`
+      message: `${service.title} for ${appContext.vehicle.make} ${appContext.vehicle.model} is scheduled for ${date.toLocaleString()}.`
     });
   };
 
@@ -25,6 +25,7 @@ export default function MaintenanceBookingScreen({ route, navigation, appContext
     <View style={styles.container}>
       <Text style={styles.title}>{service.title}</Text>
       <Text style={styles.price}>Fixed Price: ${service.price}</Text>
+      <Text style={styles.vehicle}>Vehicle: {appContext.vehicle.make} {appContext.vehicle.model}</Text>
       <Text style={styles.label}>Choose Date & Time</Text>
 
       <View style={styles.pickerCard}>
@@ -57,6 +58,11 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontSize: 16,
     fontWeight: '700'
+  },
+  vehicle: {
+    marginTop: 6,
+    color: colors.subtext,
+    fontWeight: '600'
   },
   label: {
     marginTop: 16,

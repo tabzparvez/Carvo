@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import InfoCard from '../../components/InfoCard';
-import PrimaryButton from '../../components/PrimaryButton';
+import VehicleSelectorCard from '../../components/VehicleSelectorCard';
 import { nearbyMechanics } from '../../data/mockData';
 import { colors } from '../../styles/theme';
 
@@ -12,7 +12,7 @@ const typeIcons = {
   tow: 'trail-sign'
 };
 
-export default function EmergencyHomeScreen({ navigation }) {
+export default function EmergencyHomeScreen({ navigation, appContext }) {
   const [location, setLocation] = useState(null);
   const [isDetecting, setIsDetecting] = useState(false);
 
@@ -53,6 +53,8 @@ export default function EmergencyHomeScreen({ navigation }) {
 
         {isDetecting ? <Text style={styles.detectingText}>Detecting your location…</Text> : null}
       </View>
+
+      <VehicleSelectorCard vehicle={appContext.vehicle} setVehicle={appContext.setVehicle} />
 
       {location ? (
         <InfoCard
@@ -95,6 +97,15 @@ export default function EmergencyHomeScreen({ navigation }) {
                   <Text style={styles.star}>★</Text>
                   <Text style={styles.metaText}>{item.rating}</Text>
                 </View>
+                <View style={styles.metaPill}>
+                  <Ionicons name="car-outline" size={14} color={colors.subtext} />
+                  <Text style={styles.metaText}>{item.expertIn.join(', ')}</Text>
+                </View>
+                <Text style={[styles.compatibleText, !item.expertIn.includes(appContext.vehicle.make) && styles.notCompatibleText]}>
+                  {item.expertIn.includes(appContext.vehicle.make)
+                    ? `Supports ${appContext.vehicle.make} vehicles`
+                    : `May have limited support for ${appContext.vehicle.make}`}
+                </Text>
               </View>
             </InfoCard>
           </Pressable>
@@ -191,5 +202,14 @@ const styles = StyleSheet.create({
   star: {
     color: '#FDB022',
     fontSize: 12
+  },
+  compatibleText: {
+    marginTop: 6,
+    color: colors.success,
+    fontSize: 12,
+    fontWeight: '700'
+  },
+  notCompatibleText: {
+    color: colors.danger
   }
 });
