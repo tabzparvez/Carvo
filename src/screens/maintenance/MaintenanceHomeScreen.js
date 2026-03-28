@@ -17,8 +17,8 @@ export default function MaintenanceHomeScreen({ navigation, appContext }) {
           <Pressable onPress={() => navigation.navigate('MaintenanceBooking', { service: item })}>
             <InfoCard
               title={item.title}
-              subtitle={`Fixed price service`}
-              rightNode={<Text style={styles.price}>${item.price}</Text>}
+              subtitle={`Est. ${item.priceRange} • Recommended: ${item.recommendedParts.slice(0, 2).join(', ')}`}
+              rightNode={<Text style={styles.price}>${item.basePrice}</Text>}
             />
           </Pressable>
         )}

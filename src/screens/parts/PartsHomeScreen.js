@@ -9,23 +9,38 @@ import { colors } from '../../styles/theme';
 export default function PartsHomeScreen({ navigation, appContext }) {
   const [cart, setCart] = useState([]);
   const [selectionMap, setSelectionMap] = useState({});
+  const [qtyMap, setQtyMap] = useState({});
   const { vehicle } = appContext;
 
   const resolvedParts = useMemo(() => {
-    return spareParts.map((part) => {
+    const withSelection = spareParts.map((part) => {
       const selectedCategoryId = selectionMap[part.id]?.categoryId || part.categories[0].id;
       const selectedCategory = part.categories.find((c) => c.id === selectedCategoryId) || part.categories[0];
       const selectedBrandId = selectionMap[part.id]?.brandId || selectedCategory.brands[0].id;
       const selectedBrand = selectedCategory.brands.find((b) => b.id === selectedBrandId) || selectedCategory.brands[0];
+      const compatible = selectedBrand.compatibility.some(
+        (c) => c.make === vehicle.make && c.model === vehicle.model && c.years.includes(vehicle.year)
+      );
 
       return {
         ...part,
         selectedCategory,
         selectedBrand,
-        compatible: selectedBrand.supportedModels.includes(vehicle.model)
+        compatible,
+        quantity: qtyMap[part.id] || 1
       };
     });
-  }, [selectionMap, vehicle.model]);
+
+    return withSelection.filter((part) =>
+      part.categories.some((cat) =>
+        cat.brands.some((brand) =>
+          brand.compatibility.some(
+            (c) => c.make === vehicle.make && c.model === vehicle.model && c.years.includes(vehicle.year)
+          )
+        )
+      )
+    );
+  }, [selectionMap, qtyMap, vehicle]);
 
   const setCategory = (partId, categoryId) => {
     const part = spareParts.find((item) => item.id === partId);
@@ -49,6 +64,13 @@ export default function PartsHomeScreen({ navigation, appContext }) {
     }));
   };
 
+  const changeQty = (partId, increment) => {
+    setQtyMap((prev) => {
+      const current = prev[partId] || 1;
+      return { ...prev, [partId]: Math.max(1, current + increment) };
+    });
+  };
+
   const addToCart = (part) => {
     setCart((prev) => [
       ...prev,
@@ -58,7 +80,9 @@ export default function PartsHomeScreen({ navigation, appContext }) {
         category: part.selectedCategory.label,
         brand: part.selectedBrand.name,
         price: part.selectedBrand.price,
-        vehicleModel: vehicle.model
+        qty: part.quantity,
+        oemRecommended: part.selectedBrand.oemRecommended,
+        vehicleLabel: `${vehicle.make} ${vehicle.model} ${vehicle.year}`
       }
     ]);
   };
@@ -77,6 +101,7 @@ export default function PartsHomeScreen({ navigation, appContext }) {
       <FlatList
         data={resolvedParts}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={<Text style={styles.empty}>No compatible parts found for selected car.</Text>}
         renderItem={({ item }) => (
           <InfoCard
             title={item.name}
@@ -104,25 +129,37 @@ export default function PartsHomeScreen({ navigation, appContext }) {
                   style={[styles.chip, item.selectedBrand.id === brand.id && styles.chipActive]}
                   onPress={() => setBrand(item.id, brand.id)}
                 >
-                  <Text style={[styles.chipText, item.selectedBrand.id === brand.id && styles.chipTextActive]}>
-                    {brand.name}
-                  </Text>
+                  <Text style={[styles.chipText, item.selectedBrand.id === brand.id && styles.chipTextActive]}>{brand.name}</Text>
                 </Pressable>
               ))}
             </View>
 
             <Text style={[styles.compatibility, !item.compatible && styles.notCompatible]}>
               {item.compatible
-                ? `Compatible with your ${vehicle.make} ${vehicle.model}`
-                : `Not ideal for ${vehicle.model}. Supported: ${item.selectedBrand.supportedModels.join(', ')}`}
+                ? `Compatible with ${vehicle.make} ${vehicle.model} (${vehicle.year})`
+                : `Not compatible with selected car`}
             </Text>
+            <Text style={styles.oem}>{item.selectedBrand.oemRecommended ? 'OEM Recommended' : 'Aftermarket Option'}</Text>
+
+            <View style={styles.qtyRow}>
+              <Text style={styles.smallLabel}>Quantity</Text>
+              <View style={styles.qtyControls}>
+                <Pressable style={styles.qtyBtn} onPress={() => changeQty(item.id, -1)}>
+                  <Text style={styles.qtyBtnText}>-</Text>
+                </Pressable>
+                <Text style={styles.qtyValue}>{item.quantity}</Text>
+                <Pressable style={styles.qtyBtn} onPress={() => changeQty(item.id, 1)}>
+                  <Text style={styles.qtyBtnText}>+</Text>
+                </Pressable>
+              </View>
+            </View>
 
             <Pressable
               style={[styles.orderBtn, !item.compatible && styles.orderBtnDisabled]}
               onPress={() => addToCart(item)}
               disabled={!item.compatible}
             >
-              <Text style={styles.orderText}>Order</Text>
+              <Text style={styles.orderText}>Add to Cart</Text>
             </Pressable>
           </InfoCard>
         )}
@@ -157,6 +194,11 @@ const styles = StyleSheet.create({
   history: {
     color: colors.primary,
     fontWeight: '700'
+  },
+  empty: {
+    textAlign: 'center',
+    color: colors.subtext,
+    marginTop: 20
   },
   smallLabel: {
     marginTop: 8,
@@ -199,6 +241,43 @@ const styles = StyleSheet.create({
   },
   notCompatible: {
     color: colors.danger
+  },
+  oem: {
+    marginTop: 4,
+    color: colors.subtext,
+    fontSize: 12,
+    fontWeight: '600'
+  },
+  qtyRow: {
+    marginTop: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  qtyControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  qtyBtn: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  qtyBtnText: {
+    fontWeight: '700',
+    color: colors.text
+  },
+  qtyValue: {
+    minWidth: 20,
+    textAlign: 'center',
+    fontWeight: '700',
+    color: colors.text
   },
   price: {
     fontWeight: '800',

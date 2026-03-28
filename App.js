@@ -19,7 +19,7 @@ const navTheme = {
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [orderHistory, setOrderHistory] = useState([]);
-  const [vehicle, setVehicle] = useState({ make: 'Toyota', model: 'Corolla' });
+  const [vehicle, setVehicle] = useState({ make: 'Toyota', model: 'Corolla', year: 2021 });
 
   const addHistoryItem = (item) => {
     setOrderHistory((prev) => [{ id: Date.now().toString(), ...item }, ...prev]);

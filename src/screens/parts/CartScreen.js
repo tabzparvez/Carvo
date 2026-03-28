@@ -5,12 +5,12 @@ import { colors } from '../../styles/theme';
 
 export default function CartScreen({ route, navigation, appContext }) {
   const cart = route.params?.cart || [];
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const confirmOrder = () => {
     appContext.addHistoryItem({
       title: `Parts Order (${cart.length} items)`,
-      subtitle: 'Spare parts marketplace',
+      subtitle: cart[0]?.vehicleLabel || 'Spare parts marketplace',
       amount: `$${total}`
     });
 
@@ -30,9 +30,11 @@ export default function CartScreen({ route, navigation, appContext }) {
             <View>
               <Text style={styles.itemName}>{item.name}</Text>
               <Text style={styles.itemMeta}>{item.category} • {item.brand}</Text>
-              <Text style={styles.itemMeta}>For model: {item.vehicleModel}</Text>
+              <Text style={styles.itemMeta}>{item.oemRecommended ? 'OEM Recommended' : 'Aftermarket'}</Text>
+              <Text style={styles.itemMeta}>Vehicle: {item.vehicleLabel}</Text>
+              <Text style={styles.itemMeta}>Qty: {item.qty}</Text>
             </View>
-            <Text style={styles.itemPrice}>${item.price}</Text>
+            <Text style={styles.itemPrice}>${item.price * item.qty}</Text>
           </View>
         )}
         ListFooterComponent={

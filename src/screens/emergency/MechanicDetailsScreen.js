@@ -14,6 +14,9 @@ export default function MechanicDetailsScreen({ route, navigation }) {
         <Text style={styles.meta}>Rating: {mechanic.rating} ⭐</Text>
         <Text style={styles.meta}>Estimated arrival: {mechanic.eta}</Text>
         <Text style={styles.meta}>Distance: {mechanic.distance}</Text>
+        <Text style={styles.meta}>Specialization: {mechanic.specialization.join(', ')}</Text>
+        <Text style={styles.meta}>Estimated cost range: {mechanic.costRange}</Text>
+        <Text style={styles.meta}>Supports: {mechanic.supportedVehicles.map((v) => `${v.make} ${v.model}`).join(', ')}</Text>
 
         <Text style={styles.rateTitle}>Your expected service rating</Text>
         <View style={styles.ratingRow}>

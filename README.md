@@ -14,7 +14,7 @@ A demo mobile app prototype for **roadside assistance**, **home maintenance book
 - Success confirmation screen
 
 ### 2) Maintenance Module
-- Vehicle make/model selector for standardized booking context
+- Vehicle make/model/year selector for standardized booking context
 - Services list:
   - Oil Change
   - Brake Service
@@ -25,7 +25,7 @@ A demo mobile app prototype for **roadside assistance**, **home maintenance book
 - Booking confirmation + success screen
 
 ### 3) Spare Parts Marketplace
-- Product list with category + brand selection and model compatibility checks:
+- Product list with category + brand selection, OEM tag, quantity selector, and make/model/year compatibility checks:
   - Battery
   - Engine Oil
   - Air Filter

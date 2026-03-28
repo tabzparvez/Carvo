@@ -22,7 +22,10 @@ export default function EmergencyHomeScreen({ navigation, appContext }) {
     setTimeout(() => {
       setLocation({
         address: 'Downtown Avenue, Sector 12',
-        proximity: '1.8 km away'
+        proximity: '1.8 km away',
+        coordinates: { lat: 24.8607, lng: 67.0011 },
+        source: 'mock_gps',
+        timestamp: new Date().toISOString()
       });
       setIsDetecting(false);
     }, 900);
@@ -59,7 +62,7 @@ export default function EmergencyHomeScreen({ navigation, appContext }) {
       {location ? (
         <InfoCard
           title="Detected Location"
-          subtitle={`${location.address} – ${location.proximity}`}
+          subtitle={`${location.address} – ${location.proximity} • ${location.source}`}
           rightNode={<Ionicons name="location" size={18} color={colors.primary} />}
         />
       ) : null}
@@ -98,13 +101,17 @@ export default function EmergencyHomeScreen({ navigation, appContext }) {
                   <Text style={styles.metaText}>{item.rating}</Text>
                 </View>
                 <View style={styles.metaPill}>
-                  <Ionicons name="car-outline" size={14} color={colors.subtext} />
-                  <Text style={styles.metaText}>{item.expertIn.join(', ')}</Text>
+                  <Ionicons name="construct-outline" size={14} color={colors.subtext} />
+                  <Text style={styles.metaText}>{item.specialization.join(', ')}</Text>
                 </View>
-                <Text style={[styles.compatibleText, !item.expertIn.includes(appContext.vehicle.make) && styles.notCompatibleText]}>
-                  {item.expertIn.includes(appContext.vehicle.make)
-                    ? `Supports ${appContext.vehicle.make} vehicles`
-                    : `May have limited support for ${appContext.vehicle.make}`}
+                <View style={styles.metaPill}>
+                  <Ionicons name="cash-outline" size={14} color={colors.subtext} />
+                  <Text style={styles.metaText}>Est. {item.costRange}</Text>
+                </View>
+                <Text style={[styles.compatibleText, !item.supportedVehicles.some((v) => v.make === appContext.vehicle.make && v.model === appContext.vehicle.model) && styles.notCompatibleText]}>
+                  {item.supportedVehicles.some((v) => v.make === appContext.vehicle.make && v.model === appContext.vehicle.model)
+                    ? `Supports ${appContext.vehicle.make} ${appContext.vehicle.model}`
+                    : `Limited support for ${appContext.vehicle.make} ${appContext.vehicle.model}`}
                 </Text>
               </View>
             </InfoCard>

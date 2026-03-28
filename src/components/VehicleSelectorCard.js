@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { vehicleCatalog } from '../data/mockData';
+import { cars } from '../data/mockData';
 import { colors } from '../styles/theme';
 
 export default function VehicleSelectorCard({ vehicle, setVehicle }) {
-  const makes = Object.keys(vehicleCatalog);
-  const availableModels = vehicleCatalog[vehicle.make] || [];
+  const makes = useMemo(() => [...new Set(cars.map((car) => car.make))], []);
+  const models = useMemo(
+    () => [...new Set(cars.filter((car) => car.make === vehicle.make).map((car) => car.model))],
+    [vehicle.make]
+  );
+  const years = useMemo(
+    () => [...new Set(cars.filter((car) => car.make === vehicle.make && car.model === vehicle.model).map((car) => car.year))],
+    [vehicle.make, vehicle.model]
+  );
 
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Select Vehicle (Make / Model)</Text>
+      <Text style={styles.title}>Select Vehicle (Make / Model / Year)</Text>
 
       <Text style={styles.label}>Make</Text>
       <View style={styles.rowWrap}>
@@ -17,9 +24,11 @@ export default function VehicleSelectorCard({ vehicle, setVehicle }) {
           <Pressable
             key={make}
             style={[styles.chip, vehicle.make === make && styles.chipActive]}
-            onPress={() => setVehicle({ make, model: vehicleCatalog[make][0] })}
-            accessibilityRole="button"
-            accessibilityLabel={`Select make ${make}`}
+            onPress={() => {
+              const firstModel = [...new Set(cars.filter((car) => car.make === make).map((car) => car.model))][0];
+              const firstYear = cars.find((car) => car.make === make && car.model === firstModel)?.year;
+              setVehicle({ make, model: firstModel, year: firstYear });
+            }}
           >
             <Text style={[styles.chipText, vehicle.make === make && styles.chipTextActive]}>{make}</Text>
           </Pressable>
@@ -28,15 +37,29 @@ export default function VehicleSelectorCard({ vehicle, setVehicle }) {
 
       <Text style={styles.label}>Model</Text>
       <View style={styles.rowWrap}>
-        {availableModels.map((model) => (
+        {models.map((model) => (
           <Pressable
             key={model}
             style={[styles.chip, vehicle.model === model && styles.chipActive]}
-            onPress={() => setVehicle((prev) => ({ ...prev, model }))}
-            accessibilityRole="button"
-            accessibilityLabel={`Select model ${model}`}
+            onPress={() => {
+              const firstYear = cars.find((car) => car.make === vehicle.make && car.model === model)?.year;
+              setVehicle((prev) => ({ ...prev, model, year: firstYear }));
+            }}
           >
             <Text style={[styles.chipText, vehicle.model === model && styles.chipTextActive]}>{model}</Text>
+          </Pressable>
+        ))}
+      </View>
+
+      <Text style={styles.label}>Year</Text>
+      <View style={styles.rowWrap}>
+        {years.map((year) => (
+          <Pressable
+            key={year}
+            style={[styles.chip, vehicle.year === year && styles.chipActive]}
+            onPress={() => setVehicle((prev) => ({ ...prev, year }))}
+          >
+            <Text style={[styles.chipText, vehicle.year === year && styles.chipTextActive]}>{year}</Text>
           </Pressable>
         ))}
       </View>
