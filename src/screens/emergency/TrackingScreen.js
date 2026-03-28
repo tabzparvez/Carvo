@@ -5,7 +5,7 @@ import { trackingUpdates } from '../../data/mockData';
 import { colors } from '../../styles/theme';
 
 export default function TrackingScreen({ route, navigation }) {
-  const { mechanic } = route.params;
+  const { mechanic, service, problem } = route.params;
   const [step, setStep] = useState(0);
 
   useEffect(() => {
@@ -16,10 +16,13 @@ export default function TrackingScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tracking {mechanic.name}</Text>
+      <Text style={styles.title}>{service || 'Emergency'} Request</Text>
+      <Text style={styles.sub}>Problem: {problem || 'Not specified'}</Text>
+      <Text style={styles.sub}>Mechanic: {mechanic.name}</Text>
+
       <View style={styles.mapMock}>
-        <Text style={styles.mapLabel}>Mock Map View</Text>
-        <Text style={styles.mapSub}>Mechanic is navigating to your location</Text>
+        <Text style={styles.mapLabel}>Karachi Live Tracking (Demo)</Text>
+        <Text style={styles.mapSub}>{mechanic.distance} away • ETA {mechanic.eta}</Text>
       </View>
 
       {trackingUpdates.map((item, index) => (
@@ -30,11 +33,11 @@ export default function TrackingScreen({ route, navigation }) {
 
       <View style={styles.cta}>
         <PrimaryButton
-          label="Confirm Booking"
+          label="Finish"
           onPress={() =>
             navigation.navigate('Success', {
-              title: 'Mechanic Booked!',
-              message: `${mechanic.name} is on the way to your location.`
+              title: 'Service Completed',
+              message: `${mechanic.name} request flow completed successfully.`
             })
           }
         />
@@ -44,44 +47,13 @@ export default function TrackingScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: colors.background
-  },
-  title: {
-    color: colors.text,
-    fontWeight: '800',
-    fontSize: 21,
-    marginBottom: 12
-  },
-  mapMock: {
-    height: 180,
-    backgroundColor: '#DDE8FF',
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 18
-  },
-  mapLabel: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: colors.primary
-  },
-  mapSub: {
-    color: '#355A99',
-    marginTop: 6
-  },
-  update: {
-    color: colors.subtext,
-    marginBottom: 10,
-    fontSize: 15
-  },
-  updateActive: {
-    color: colors.text,
-    fontWeight: '600'
-  },
-  cta: {
-    marginTop: 'auto'
-  }
+  container: { flex: 1, padding: 16, backgroundColor: colors.background },
+  title: { color: colors.text, fontWeight: '800', fontSize: 21, marginBottom: 4 },
+  sub: { color: colors.subtext, marginBottom: 4 },
+  mapMock: { height: 180, backgroundColor: '#DDE8FF', borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 18, marginTop: 8 },
+  mapLabel: { fontSize: 20, fontWeight: '700', color: colors.primary },
+  mapSub: { color: '#355A99', marginTop: 6 },
+  update: { color: colors.subtext, marginBottom: 10, fontSize: 15 },
+  updateActive: { color: colors.text, fontWeight: '600' },
+  cta: { marginTop: 'auto' }
 });

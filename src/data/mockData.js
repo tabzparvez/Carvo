@@ -1,226 +1,141 @@
-export const cars = [
-  { id: 1, make: 'Toyota', model: 'Corolla', year: 2021 },
-  { id: 2, make: 'Toyota', model: 'Yaris', year: 2020 },
-  { id: 3, make: 'Honda', model: 'Civic', year: 2020 },
-  { id: 4, make: 'Honda', model: 'City', year: 2022 },
-  { id: 5, make: 'Suzuki', model: 'Swift', year: 2021 },
-  { id: 6, make: 'Suzuki', model: 'Cultus', year: 2019 },
-  { id: 7, make: 'Kia', model: 'Sportage', year: 2023 },
-  { id: 8, make: 'Kia', model: 'Picanto', year: 2021 }
+export const vehicleMaster = {
+  Toyota: ['Corolla', 'Yaris', 'Hilux'],
+  Honda: ['Civic', 'City', 'BR-V'],
+  Suzuki: ['Swift', 'Cultus', 'Wagon R'],
+  Kia: ['Sportage', 'Picanto', 'Stonic'],
+  Hyundai: ['Elantra', 'Sonata', 'Tucson'],
+  Changan: ['Alsvin', 'Oshan X7'],
+  MG: ['MG HS', 'MG ZS'],
+  Peugeot: ['2008'],
+  Isuzu: ['D-Max']
+};
+
+export const yearOptions = [2018, 2019, 2020, 2021, 2022, 2023, 2024];
+export const fuelTypes = ['Petrol', 'Diesel', 'Hybrid', 'EV'];
+
+export const serviceCategories = [
+  { id: 'engine', title: 'Engine Issue', icon: 'construct' },
+  { id: 'battery', title: 'Battery', icon: 'battery-charging' },
+  { id: 'tyre', title: 'Tyre', icon: 'ellipse' },
+  { id: 'towing', title: 'Towing', icon: 'car' },
+  { id: 'maintenance', title: 'Maintenance', icon: 'build' }
+];
+
+export const problemOptions = [
+  'Car not starting',
+  'Battery dead',
+  'Flat tyre',
+  'Engine overheating',
+  'Out of fuel'
 ];
 
 export const nearbyMechanics = [
   {
     id: 'm1',
-    name: 'RapidFix Garage',
-    type: 'tow',
+    name: 'Gulshan Auto Rescue',
     rating: 4.8,
-    eta: '12 mins',
-    distance: '1.8 km',
-    proximityNote: '1.8 km away',
+    eta: '12 min',
+    distance: '1.9 km',
+    availability: 'Available',
     specialization: ['Engine', 'Brake'],
-    costRange: '$40 - $120',
-    supportedVehicles: [
-      { make: 'Toyota', model: 'Corolla' },
-      { make: 'Honda', model: 'Civic' },
-      { make: 'Honda', model: 'City' }
-    ]
+    supportedBrands: ['Toyota', 'Honda', 'Kia'],
+    priceEstimatePkr: '₨ 4,500 - ₨ 9,000',
+    location: { x: 22, y: 40 }
   },
   {
     id: 'm2',
-    name: 'City Auto Rescue',
-    type: 'car',
+    name: 'Bahadurabad Workshop',
     rating: 4.6,
-    eta: '18 mins',
-    distance: '2.4 km',
-    proximityNote: '2.4 km away',
-    specialization: ['AC', 'General'],
-    costRange: '$30 - $100',
-    supportedVehicles: [
-      { make: 'Suzuki', model: 'Swift' },
-      { make: 'Suzuki', model: 'Cultus' },
-      { make: 'Kia', model: 'Picanto' }
-    ]
+    eta: '18 min',
+    distance: '2.7 km',
+    availability: 'Busy',
+    specialization: ['Battery', 'Electrical', 'AC'],
+    supportedBrands: ['Suzuki', 'Hyundai', 'Changan'],
+    priceEstimatePkr: '₨ 3,500 - ₨ 8,000',
+    location: { x: 62, y: 32 }
   },
   {
     id: 'm3',
-    name: 'Prime Mobile Mechanic',
-    type: 'truck',
+    name: 'Korangi 24/7 Towing',
     rating: 4.9,
-    eta: '22 mins',
-    distance: '3.1 km',
-    proximityNote: '3.1 km away',
-    specialization: ['Engine', 'AC', 'Brake'],
-    costRange: '$50 - $150',
-    supportedVehicles: [
-      { make: 'Toyota', model: 'Corolla' },
-      { make: 'Kia', model: 'Sportage' },
-      { make: 'Honda', model: 'Civic' }
-    ]
+    eta: '20 min',
+    distance: '3.4 km',
+    availability: 'Available',
+    specialization: ['Tyre', 'Towing', 'General'],
+    supportedBrands: ['Toyota', 'Honda', 'Suzuki', 'Kia', 'MG'],
+    priceEstimatePkr: '₨ 5,000 - ₨ 12,000',
+    location: { x: 45, y: 68 }
   }
 ];
+
+export const trackingUpdates = ['Requested', 'Accepted', 'On the way', 'Completed'];
 
 export const maintenanceServices = [
   {
     id: 's1',
     title: 'Oil Change',
-    basePrice: 49,
-    priceRange: '$40 - $70',
-    recommendedParts: ['Engine Oil 5W-30', 'Oil Filter OEM']
+    priceRangePkr: '₨ 3,000 - ₨ 7,500',
+    recommendedParts: ['5W-30 Fully Synthetic', 'OEM Oil Filter']
   },
   {
     id: 's2',
     title: 'Brake Service',
-    basePrice: 99,
-    priceRange: '$80 - $140',
-    recommendedParts: ['Ceramic Brake Pads', 'Brake Fluid DOT4']
+    priceRangePkr: '₨ 5,500 - ₨ 12,000',
+    recommendedParts: ['Ceramic Brake Pads', 'DOT4 Brake Fluid']
   },
   {
     id: 's3',
     title: 'AC Repair',
-    basePrice: 120,
-    priceRange: '$90 - $180',
-    recommendedParts: ['Cabin Air Filter', 'AC Gas R134a']
+    priceRangePkr: '₨ 4,500 - ₨ 14,000',
+    recommendedParts: ['Cabin Filter', 'AC Gas R134a']
   },
   {
     id: 's4',
     title: 'General Inspection',
-    basePrice: 65,
-    priceRange: '$50 - $90',
-    recommendedParts: ['Diagnostic Scan', 'Multi-point checklist']
+    priceRangePkr: '₨ 2,000 - ₨ 5,000',
+    recommendedParts: ['Diagnostic Scan', 'Safety checklist']
   }
 ];
 
-export const spareParts = [
+export const partsCatalog = [
   {
-    id: 'p2',
-    name: 'Engine Oil',
-    categories: [
-      {
-        id: 'synthetic-5w30',
-        label: 'Synthetic 5W-30',
-        brands: [
-          {
-            id: 'shell',
-            name: 'Shell Helix',
-            price: 35,
-            oemRecommended: true,
-            compatibility: [
-              { make: 'Toyota', model: 'Corolla', years: [2020, 2021, 2022] },
-              { make: 'Honda', model: 'Civic', years: [2019, 2020, 2021] }
-            ]
-          },
-          {
-            id: 'zic',
-            name: 'ZIC X7',
-            price: 32,
-            oemRecommended: false,
-            compatibility: [
-              { make: 'Honda', model: 'City', years: [2021, 2022] },
-              { make: 'Suzuki', model: 'Swift', years: [2020, 2021] }
-            ]
-          }
-        ]
-      }
-    ]
+    id: 'pc1',
+    category: 'Engine Oil',
+    brands: ['Shell', 'Castrol', 'Liqui Moly', 'Mobil', 'Total']
   },
   {
-    id: 'p3',
-    name: 'Air Filter',
-    categories: [
-      {
-        id: 'paper-filter',
-        label: 'Paper Filter',
-        brands: [
-          {
-            id: 'vic',
-            name: 'VIC',
-            price: 25,
-            oemRecommended: true,
-            compatibility: [
-              { make: 'Toyota', model: 'Corolla', years: [2020, 2021] },
-              { make: 'Honda', model: 'City', years: [2021, 2022] }
-            ]
-          }
-        ]
-      },
-      {
-        id: 'performance-filter',
-        label: 'Performance Filter',
-        brands: [
-          {
-            id: 'kn',
-            name: 'K&N',
-            price: 42,
-            oemRecommended: false,
-            compatibility: [
-              { make: 'Honda', model: 'Civic', years: [2020, 2021] },
-              { make: 'Kia', model: 'Sportage', years: [2022, 2023] }
-            ]
-          }
-        ]
-      }
-    ]
+    id: 'pc2',
+    category: 'Tyres',
+    brands: ['General', 'Dunlop', 'Bridgestone', 'Michelin', 'Yokohama']
   },
   {
-    id: 'p4',
-    name: 'Brake Pads',
-    categories: [
-      {
-        id: 'ceramic',
-        label: 'Ceramic',
-        brands: [
-          {
-            id: 'bendix',
-            name: 'Bendix',
-            price: 85,
-            oemRecommended: true,
-            compatibility: [
-              { make: 'Toyota', model: 'Corolla', years: [2020, 2021, 2022] },
-              { make: 'Honda', model: 'Civic', years: [2020, 2021] }
-            ]
-          },
-          {
-            id: 'bosch',
-            name: 'Bosch',
-            price: 79,
-            oemRecommended: false,
-            compatibility: [
-              { make: 'Suzuki', model: 'Swift', years: [2020, 2021] },
-              { make: 'Suzuki', model: 'Cultus', years: [2019, 2020] }
-            ]
-          }
-        ]
-      }
-    ]
+    id: 'pc3',
+    category: 'Battery',
+    brands: ['AGS', 'Osaka', 'Exide']
   },
   {
-    id: 'p1',
-    name: 'Battery',
-    categories: [
-      {
-        id: 'maintenance-free',
-        label: 'Maintenance Free',
-        brands: [
-          {
-            id: 'osaka-batt',
-            name: 'Osaka',
-            price: 150,
-            oemRecommended: true,
-            compatibility: [
-              { make: 'Toyota', model: 'Corolla', years: [2020, 2021] },
-              { make: 'Honda', model: 'City', years: [2021, 2022] }
-            ]
-          }
-        ]
-      }
-    ]
+    id: 'pc4',
+    category: 'Spark Plugs',
+    brands: ['NGK', 'Denso']
+  },
+  {
+    id: 'pc5',
+    category: 'Filters',
+    brands: ['VIC', 'Guard', 'Bosch']
   }
 ];
 
-export const trackingUpdates = [
-  'Request accepted',
-  'Mechanic preparing tools',
-  'Mechanic on the way',
-  'Arriving soon'
-];
+export const smartRecommendations = {
+  lowMileage: {
+    oilType: '5W-30 Synthetic',
+    tyreSize: '195/65/R15',
+    battery: 'AGS 45Ah',
+    suggestedBrands: ['Shell', 'Castrol', 'Bridgestone']
+  },
+  highMileage: {
+    oilType: '10W-40 High Mileage',
+    tyreSize: '185/65/R15',
+    battery: 'Osaka 50Ah',
+    suggestedBrands: ['Total', 'Liqui Moly', 'General']
+  }
+};

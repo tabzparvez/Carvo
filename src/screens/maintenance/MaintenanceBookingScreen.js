@@ -8,15 +8,14 @@ import { colors } from '../../styles/theme';
 export default function MaintenanceBookingScreen({ route, navigation, appContext }) {
   const { service } = route.params;
   const [date, setDate] = useState(new Date());
+  const vehicle = appContext.selectedVehicle;
 
   const compatibleMechanics = useMemo(
     () =>
       nearbyMechanics.filter((m) =>
-        m.supportedVehicles.some(
-          (v) => v.make === appContext.vehicle.make && v.model === appContext.vehicle.model
-        )
+        m.supportedBrands.includes(vehicle?.make)
       ),
-    [appContext.vehicle.make, appContext.vehicle.model]
+    [vehicle?.make, vehicle?.model]
   );
 
   const [preferredMechanic, setPreferredMechanic] = useState(compatibleMechanics[0]?.name || 'Any Available');
@@ -24,23 +23,22 @@ export default function MaintenanceBookingScreen({ route, navigation, appContext
   const bookService = () => {
     appContext.addHistoryItem({
       title: service.title,
-      subtitle: `${appContext.vehicle.make} ${appContext.vehicle.model} ${appContext.vehicle.year} • ${date.toLocaleString()}`,
-      amount: `$${service.basePrice}`
+      subtitle: `${vehicle?.make || 'Vehicle'} ${vehicle?.model || ''} ${vehicle?.year || ''} • ${date.toLocaleString()}`,
+      amount: service.priceRangePkr
     });
 
     navigation.navigate('Success', {
       title: 'Service Booked',
-      message: `${service.title} for ${appContext.vehicle.make} ${appContext.vehicle.model} (${appContext.vehicle.year}) is scheduled for ${date.toLocaleString()}.`
+      message: `${service.title} for ${vehicle?.make || ''} ${vehicle?.model || ''} (${vehicle?.year || ''}) is scheduled for ${date.toLocaleString()}.`
     });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{service.title}</Text>
-      <Text style={styles.price}>Starting from: ${service.basePrice}</Text>
-      <Text style={styles.range}>Estimated range: {service.priceRange}</Text>
+      <Text style={styles.price}>Estimated: {service.priceRangePkr}</Text>
       <Text style={styles.vehicle}>
-        Vehicle: {appContext.vehicle.make} {appContext.vehicle.model} ({appContext.vehicle.year})
+        Vehicle: {vehicle ? `${vehicle.make} ${vehicle.model} (${vehicle.year})` : 'Not selected'}
       </Text>
 
       <Text style={styles.label}>Recommended parts</Text>

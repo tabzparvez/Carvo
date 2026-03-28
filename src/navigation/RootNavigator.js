@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 import EmergencyHomeScreen from '../screens/emergency/EmergencyHomeScreen';
 import MechanicDetailsScreen from '../screens/emergency/MechanicDetailsScreen';
 import TrackingScreen from '../screens/emergency/TrackingScreen';
+import MechanicSignupScreen from '../screens/emergency/MechanicSignupScreen';
 import MaintenanceHomeScreen from '../screens/maintenance/MaintenanceHomeScreen';
 import MaintenanceBookingScreen from '../screens/maintenance/MaintenanceBookingScreen';
 import PartsHomeScreen from '../screens/parts/PartsHomeScreen';
@@ -26,6 +27,7 @@ function EmergencyStack({ appContext }) {
       <Stack.Screen name="MechanicDetails" component={MechanicDetailsScreen} options={{ title: 'Mechanic Details' }} />
       <Stack.Screen name="Tracking" component={TrackingScreen} />
       <Stack.Screen name="Success" component={SuccessScreen} options={{ title: 'Confirmation' }} />
+      <Stack.Screen name="MechanicSignup" component={MechanicSignupScreen} options={{ title: 'Mechanic Signup' }} />
     </Stack.Navigator>
   );
 }
@@ -40,6 +42,7 @@ function MaintenanceStack({ appContext }) {
         {(props) => <MaintenanceBookingScreen {...props} appContext={appContext} />}
       </Stack.Screen>
       <Stack.Screen name="Success" component={SuccessScreen} options={{ title: 'Confirmation' }} />
+      <Stack.Screen name="MechanicSignup" component={MechanicSignupScreen} options={{ title: 'Mechanic Signup' }} />
     </Stack.Navigator>
   );
 }

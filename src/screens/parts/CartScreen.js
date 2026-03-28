@@ -11,12 +11,12 @@ export default function CartScreen({ route, navigation, appContext }) {
     appContext.addHistoryItem({
       title: `Parts Order (${cart.length} items)`,
       subtitle: cart[0]?.vehicleLabel || 'Spare parts marketplace',
-      amount: `$${total}`
+      amount: `₨ ${total}`
     });
 
     navigation.navigate('Success', {
       title: 'Order Confirmed',
-      message: `Your parts order of $${total} has been placed successfully.`
+      message: `Your parts order of ₨ ${total} has been placed successfully.`
     });
   };
 
@@ -34,13 +34,13 @@ export default function CartScreen({ route, navigation, appContext }) {
               <Text style={styles.itemMeta}>Vehicle: {item.vehicleLabel}</Text>
               <Text style={styles.itemMeta}>Qty: {item.qty}</Text>
             </View>
-            <Text style={styles.itemPrice}>${item.price * item.qty}</Text>
+            <Text style={styles.itemPrice}>{`₨ ${item.price * item.qty}`}</Text>
           </View>
         )}
         ListFooterComponent={
           <View style={styles.footer}>
             <Text style={styles.total}>Total</Text>
-            <Text style={styles.totalPrice}>${total}</Text>
+            <Text style={styles.totalPrice}>{`₨ ${total}`}</Text>
           </View>
         }
       />
